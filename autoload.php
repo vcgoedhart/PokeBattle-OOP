@@ -1,11 +1,20 @@
 <?php
 spl_autoload_register(function ($className) {
-    $file = __DIR__ . "\\" . "Classes" . "\\" . $className . ".php";
-    $file = str_replace("\\", DIRECTORY_SEPARATOR, $file);
+    // Class directories
+    $dirs = array(
+        "Classes\\",
+        "Classes\\Pokemon\\",
+        "Classes\\Property\\"
+    );
 
-    echo "$file <br>";
+    // Loop through all directories
+    foreach ($dirs as $dir) {
+        $file = __DIR__ . "\\" . $dir . $className . ".php";
+        $file = str_replace("\\", DIRECTORY_SEPARATOR, $file);
 
-    if (file_exists($file)) {
-        require $file;
+        if (file_exists($file)) {
+            require $file;
+            return;
+        }
     }
 });
