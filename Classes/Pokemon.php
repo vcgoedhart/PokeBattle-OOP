@@ -1,4 +1,5 @@
 <?php
+
 abstract class Pokemon
 {
     private $name;
@@ -9,6 +10,8 @@ abstract class Pokemon
     protected $energyType;
     protected $resistance;
     protected $weakness;
+
+    private static $population;
 
     /**
      * Initialiser when an object is constructed.
@@ -22,6 +25,8 @@ abstract class Pokemon
 
         $this->maxHealth = $maxHealth;
         $this->health = $maxHealth;
+
+        self::$population++;
     }
 
     /**
@@ -32,24 +37,80 @@ abstract class Pokemon
      */
     abstract public function attacks(): array;
 
+    /**
+     * Attack function to attack another pokemon with. This function causes target to lose health.
+     *
+     * @param Pokemon $target - The target Pokémon who is going to receive damage.
+     * @param Attack $attack - The attack which will be used against the target.
+     */
     public function attack(Pokemon $target, Attack $attack)
     {
+        /**
+         * Attacker cannot attack if it hass less or equal than 0 health.
+         */
+        if ($this->health <= 0) return;
+
+        /**
+         * If target has any resistance against the EnergyType of this Attack. The damage reduces.
+         */
+        foreach ($target->resistance as $resist) {
+            if ($this->energyType->type === $resist->energyType) {
+                $attack->damage = $attack->damage  - $resist->value;
+            }
+        }
+
+        /**
+         * If target has any weakness against the EnergyType of this attack. The damage gets amplified.
+         */
+        foreach ($target->weakness as $weak) {
+            if ($this->energyType->type === $weak->energyType) {
+                $attack->damage = $attack->damage * $weak->amplifier;
+            }
+        }
+
+        $target->health -= $attack->damage;
+
+        /**
+         * If targets health drops below 0 the population variable wil decrement. The target's health will set to 0 to prevent it going to a negative number.
+         */
+        if ($target->health <= 0) {
+            $target->health = 0;
+            self::$population--;
+        }
     }
 
     /**
-     * Gets property values without reading the 'get'
-     * Ex: getName -> name
+     * Get property value
      *
-     * @param string $propName - property name. first 3 letters are removed.
+     * @param string $propName - The property.
      */
     public function __get($propName)
     {
-        $propName = strtolower(substr($propName, 3));
-
         if (property_exists($this, $propName)) {
             return $this->$propName;
-        } else {
-            echo "Property '$propName' does not exist.";
         }
+    }
+
+    /**
+     * Set a property value to another value
+     *
+     * @param string $propName - The property.
+     * @param $value - The value for the property.
+     */
+    public function __set($propName, $value)
+    {
+        if (property_exists($this, $propName)) {
+            $this->$propName = $value;
+        }
+    }
+
+    /**
+     * Get the alive Pokémon population
+     *
+     * @return int - Count of alive population
+     */
+    public static function getPopulation()
+    {
+        return self::$population;
     }
 }
