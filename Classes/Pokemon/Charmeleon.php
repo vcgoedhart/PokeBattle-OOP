@@ -15,6 +15,11 @@ class Charmeleon extends Pokemon
         );
     }
 
+    /**
+     * Array that possesses the Pokémon's attacking names and attacking power
+     *
+     * @return array
+     */
     public function attacks(): array
     {
         return array(
