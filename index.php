@@ -1,10 +1,35 @@
 <?php
 require "autoload.php";
 
-$pikachu = new Pikachu("Bob", 60);
-$charmeleon = new Charmeleon("Harry", 60);
+// instantiation of objects
+$pikachu = new Pikachu("Elektrische Bob", 60);
+$charmeleon = new Charmeleon("Vuur Harry", 60);
 
-var_dump($pikachu, $charmeleon);
+// ------------- Epic Pokémon Battle Begins  ------------- //
+
+$pikachu->attack($charmeleon, $pikachu->attacks()["Electric Ring"]);
+
+echo "$pikachu->name attacked $charmeleon->name using Electring Ring. </br>";
+echo "</br>";
+
+echo "<b>Status Update:</b> </br>";
+echo "$pikachu->name's HP: $pikachu->health / $pikachu->maxHealth </br>";
+echo "$charmeleon->name's HP: $charmeleon->health / $charmeleon->maxHealth </br>";
+echo "<s>--------------------------------------</s></br>";
+echo "</br>";
+
+$charmeleon->attack($pikachu, $charmeleon->attacks()["Flare"]);
+
+echo "$charmeleon->name attacked $pikachu->name using Flare. </br>";
+echo "</br>";
+
+echo "<b>Status Update:</b> </br>";
+echo "$pikachu->name's HP: $pikachu->health / $pikachu->maxHealth </br>";
+echo "$charmeleon->name's HP: $charmeleon->health / $charmeleon->maxHealth </br>";
+echo "<s>--------------------------------------</s></br>";
+echo "</br>";
+
+// ------------- Pokémon Battle Ends ------------- //
 
 ?>
 
