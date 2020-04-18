@@ -15,4 +15,12 @@ class Charmeleon extends Pokemon
             "electric" => new Resistance("electric", 10),
         );
     }
+
+    public function attacks(): array
+    {
+        return array(
+            "Flare" => new Attack("Flare", 30),
+            "Headbutt" => new Attack("Headbutt", 10)
+        );
+    }
 }

@@ -15,4 +15,12 @@ class Pikachu extends Pokemon
             "fighting" => new Resistance("fighting", 20),
         );
     }
+
+    public function attacks(): array
+    {
+        return array(
+            "Electric Ring" => new Attack("Electric Ring", 50),
+            "Pika Punch" => new Attack("Pika Punch", 20)
+        );
+    }
 }
