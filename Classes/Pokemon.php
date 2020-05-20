@@ -38,11 +38,11 @@ abstract class Pokemon
     abstract public function attacks(): array;
 
     /**
-     * Attack function to attack another pokemon with. This function causes target to lose health.
-     *
-     * @param Pokemon $target - The target Pokémon who is going to receive damage.
-     * @param Attack $attack - The attack which will be used against the target.
-     */
+    * Attack function to attack another pokemon with. This function causes target to lose health.
+    *
+    * @param Pokemon $target - The target Pokémon who is going to receive damage.
+    * @param Attack $attack - The attack which will be used against the target.
+    */
     public function attack(Pokemon $target, Attack $attack)
     {
         /**
