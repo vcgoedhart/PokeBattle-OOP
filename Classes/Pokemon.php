@@ -11,6 +11,8 @@ abstract class Pokemon
     protected $resistance;
     protected $weakness;
 
+    private $soep;
+
     private static $population;
 
     /**
@@ -19,12 +21,16 @@ abstract class Pokemon
      * @param string $name - Name for the Pokémon.
      * @param int $maxHealth - Maximum health for the Pokémon to have.
      */
-    public function __construct($name, $maxHealth)
+    public function __construct($name, $maxHealth, $energyType, $weakness, $resistance)
     {
         $this->name = $name;
 
         $this->maxHealth = $maxHealth;
         $this->health = $maxHealth;
+
+        $this->energyType = $energyType;
+        $this->weakness = $weakness;
+        $this->resistance = $resistance;
 
         self::$population++;
     }
@@ -45,6 +51,8 @@ abstract class Pokemon
     */
     public function attack(Pokemon $target, Attack $attack)
     {
+        $totalDamage = 0;
+
         /**
          * Attacker cannot attack if it hass less or equal than 0 health.
          */
@@ -55,7 +63,7 @@ abstract class Pokemon
          */
         foreach ($target->resistance as $resist) {
             if ($this->energyType->type === $resist->energyType) {
-                $attack->damage = $attack->damage  - $resist->value;
+                $totalDamage = $attack->damage - $resist->value;
             }
         }
 
@@ -64,17 +72,19 @@ abstract class Pokemon
          */
         foreach ($target->weakness as $weak) {
             if ($this->energyType->type === $weak->energyType) {
-                $attack->damage = $attack->damage * $weak->amplifier;
+                $totalDamage = $attack->damage * $weak->amplifier;
             }
         }
 
-        $target->health -= $attack->damage;
+        $target->damage($totalDamage);
+    }
 
-        /**
-         * If targets health drops below 0 the population variable wil decrement. The target's health will set to 0 to prevent it going to a negative number.
-         */
-        if ($target->health <= 0) {
-            $target->health = 0;
+    public function damage($value) 
+    {
+        $this->health -= $value;
+
+        if ($this->health <= 0) {
+            $this->health = 0;
             self::$population--;
         }
     }
